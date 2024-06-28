@@ -27,7 +27,16 @@ def main():
     except Exception as e:
         print(f"Error loading data: {e}")
         sys.exit()
-
+    shp_path = input("Enter the path to the shapefile (Empty for none): ")   
+    if shp_path:
+        try:
+            sf = get_shp(shp_path)
+            print("Shapefile loaded successfully!")
+        except:
+            print("Error loading shapefile")
+            sys.exit()
+    else:
+        sf = None
     # Variables
     x = input("Enter the name of the X column: ")
     y = input("Enter the name of the Y column: ")
@@ -41,8 +50,9 @@ def main():
     print("4 - High Pass Filter")
     print("5 - Vertical Derivative")
     print("6 - Horizontal Derivative")
-    print("7 - Resume")
-    print("8 - Exit")
+    print("7 - Second Vertical Derivative")
+    print("8 - Resume")
+    print("9 - Exit")
     print("-------")
     inp = input("Enter the number of the desired files, separated by commas: ")
 
@@ -68,25 +78,28 @@ def main():
     for i in inps:
         try:
             if i == 1:
-                plot_scatter_anomalia(data, x, y, anomalia)
+                plot_scatter_anomalia(data, x, y, anomalia, sf=sf)
             elif i == 2:
-                plot_interpolacao(data,xi, yi, zi,x,y,anomalia)
+                plot_interpolacao(data,xi, yi, zi,x,y,anomalia, sf=sf)
             elif i == 3:
-                plot_anomalia_residual(data, xi, yi, zi_residual, x, y, anomalia)
+                plot_anomalia_residual(data, xi, yi, zi_residual, x, y, anomalia, sf=sf)
             elif i == 4:
                 zi_hf = filtro_alta_frequencia(zi_residual, sigma=10)
-                plot_alta_frquencia(xi, yi, zi_hf)
+                plot_alta_frquencia(xi, yi, zi_hf, sf=sf)
             elif i == 5:
                 dv = derivada_vertical(zi_residual, np.diff(xi[0, :])[0], np.diff(yi[:, 0])[0])
-                plot_derivada_vertical(xi, yi, dv)
+                plot_derivada_vertical(xi, yi, dv, sf=sf)
             elif i == 6:
                 dh = derivada_horizontal(xi, yi, zi_residual)
-                plot_derivada_horizontal(xi, yi, dh)
+                plot_derivada_horizontal(xi, yi, dh, sf=sf)
             elif i == 7:
-                dv = derivada_vertical(zi_residual, np.diff(xi[0, :])[0], np.diff(yi[:, 0])[0])
-                dh = derivada_horizontal(xi, yi, zi_residual)
-                plot_anomalias_e_derivadas(data, xi, yi, zi_residual, dv,dh, x, y, anomalia)
+                sdv =segunda_derivada_vertical(zi_residual, np.diff(xi[0, :])[0], np.diff(yi[:, 0])[0])
+                plot_sdv(xi, yi, sdv, sf=sf)
             elif i == 8:
+                sdv =segunda_derivada_vertical(zi_residual, np.diff(xi[0, :])[0], np.diff(yi[:, 0])[0])
+                dh = derivada_horizontal(xi, yi, zi_residual)
+                plot_anomalias_e_derivadas(data, xi, yi, zi_residual, sdv,dh, x, y, anomalia, sf=sf)
+            elif i == 9:
                 print("Exiting...")
                 sys.exit()
             else:

@@ -6,3 +6,4 @@ geopandas
 openpyxl
 pykrige
 scikit-learn
+pyproj
