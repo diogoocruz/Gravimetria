@@ -1,10 +1,9 @@
-# Projeto de Exemplo
+# Análise de Dados Gravimétricos
 
 Este projeto contém scripts para realizar análise de dados gravimétricos. Siga as instruções abaixo para configurar e executar o ambiente, mesmo que não tenha conhecimento prévio de Python.
 
 ## Estrutura do Diretório
 
-- `peeecgeo/` - Diretório com o ambiente virtual.
 - `utils.py` - Script com as funções necessárias.
 - `script.py` - Script principal a ser executado.
 - `requirements.toml` - Arquivo com as dependências do projeto.
